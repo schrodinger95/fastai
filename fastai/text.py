@@ -1,6 +1,6 @@
-from .core import *
-from .learner import *
-from .lm_rnn import *
+from core import *
+from learner import *
+from lm_rnn import *
 from torch.utils.data.sampler import Sampler
 import spacy
 from spacy.symbols import ORTH

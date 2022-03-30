@@ -1,5 +1,5 @@
-from .imports import *
-from .layer_optimizer import *
+from imports import *
+from layer_optimizer import *
 from enum import IntEnum
 import copy
 

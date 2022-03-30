@@ -1,15 +1,15 @@
-from .imports import *
-from .torch_imports import *
-from .core import *
-from .model import *
-from .dataset import *
-from .learner import *
-from .text import *
-from .lm_rnn import *
+from imports import *
+from torch_imports import *
+from core import *
+from model import *
+from dataset import *
+from learner import *
+from text import *
+from lm_rnn import *
 
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
-from torchtext.datasets import language_modeling
+from torchtext.legacy.datasets import language_modeling
 
 class DotProdNB(nn.Module):
     def __init__(self, nf, ny, w_adj=0.4, r_adj=10):
@@ -165,7 +165,7 @@ class RNN_Learner(Learner):
     def load_encoder(self, name): load_model(self.model[0], self.get_model_path(name))
 
 
-class ConcatTextDataset(torchtext.data.Dataset):
+class ConcatTextDataset(torchtext.legacy.data.Dataset):
     def __init__(self, path, text_field, newline_eos=True, encoding='utf-8', **kwargs):
         fields = [('text', text_field)]
         text = []
@@ -175,11 +175,11 @@ class ConcatTextDataset(torchtext.data.Dataset):
             for line in open(p, encoding=encoding): text += text_field.preprocess(line)
             if newline_eos: text.append('<eos>')
 
-        examples = [torchtext.data.Example.fromlist([text], fields)]
+        examples = [torchtext.legacy.data.Example.fromlist([text], fields)]
         super().__init__(examples, fields, **kwargs)
 
 
-class ConcatTextDatasetFromDataFrames(torchtext.data.Dataset):
+class ConcatTextDatasetFromDataFrames(torchtext.legacy.data.Dataset):
     def __init__(self, df, text_field, col, newline_eos=True, **kwargs):
         fields = [('text', text_field)]
         text = []

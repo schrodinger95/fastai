@@ -1,9 +1,9 @@
 import warnings
-from .imports import *
-from .torch_imports import *
-from .rnn_reg import LockedDropout,WeightDrop,EmbeddingDropout
-from .model import Stepper
-from .core import set_grad_enabled
+from imports import *
+from torch_imports import *
+from rnn_reg import LockedDropout,WeightDrop,EmbeddingDropout
+from model import Stepper
+from core import set_grad_enabled
 
 IS_TORCH_04 = LooseVersion(torch.__version__) >= LooseVersion('0.4')
 

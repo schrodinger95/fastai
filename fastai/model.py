@@ -1,9 +1,9 @@
-from .imports import *
-from .torch_imports import *
-from .core import *
-from .layer_optimizer import *
-from .swa import *
-from .fp16 import *
+from imports import *
+from torch_imports import *
+from core import *
+from layer_optimizer import *
+from swa import *
+from fp16 import *
 
 IS_TORCH_04 = LooseVersion(torch.__version__) >= LooseVersion('0.4')
 
@@ -174,12 +174,14 @@ def fit(model, data, n_epochs, opt, crit, metrics=None, callbacks=None, stepper=
     else: return vals
 
 def append_stats(ep_vals, epoch, values, decimals=6):
-    ep_vals[epoch]=list(np.round(values, decimals))
+    values = [epoch] + list(values)
+    # ep_vals[epoch]=list(np.round(values, decimals))
     return ep_vals
 
 def print_stats(epoch, values, decimals=6):
     layout = "{!s:^10}" + " {!s:10}" * len(values)
-    values = [epoch] + list(np.round(values, decimals))
+    # values = [epoch] + list(np.round(values, decimals))
+    values = [epoch] + list(values)
     print(layout.format(*values))
 
 class IterBatch():

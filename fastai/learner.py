@@ -1,17 +1,17 @@
-from .imports import *
-from .torch_imports import *
-from .core import *
-from .transforms import *
-from .model import *
-from .dataset import *
-from .sgdr import *
-from .layer_optimizer import *
-from .layers import *
-from .metrics import *
-from .losses import *
-from .swa import *
-from .fp16 import *
-from .lsuv_initializer import apply_lsuv_init
+from imports import *
+from torch_imports import *
+from core import *
+from transforms import *
+from model import *
+from dataset import *
+from sgdr import *
+from layer_optimizer import *
+from layers import *
+from metrics import *
+from losses import *
+from swa import *
+from fp16 import *
+from lsuv_initializer import apply_lsuv_init
 import time
 
 
@@ -229,7 +229,7 @@ class Learner():
 
         n_epoch = int(sum_geom(cycle_len if cycle_len else 1, cycle_mult, n_cycle))
         return fit(model, data, n_epoch, layer_opt.opt, self.crit,
-            metrics=metrics, callbacks=callbacks, reg_fn=self.reg_fn, clip=self.clip, fp16=self.fp16,
+            metrics=metrics, callbacks=callbacks, reg_fn=self.reg_fn, clip=self.clip,
             swa_model=self.swa_model if use_swa else None, swa_start=swa_start, 
             swa_eval_freq=swa_eval_freq, **kwargs)
 

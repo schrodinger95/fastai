@@ -9,8 +9,8 @@
 """
 
 import torch
-from .sgdr import *
-from .core import *
+from sgdr import *
+from core import *
 
 
 class SWA(Callback):

@@ -1,5 +1,5 @@
-from .imports import *
-from .torch_imports import *
+from imports import *
+from torch_imports import *
 
 def accuracy_np(preds, targs):
     preds = np.argmax(preds, 1)

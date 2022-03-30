@@ -1,5 +1,5 @@
-from .torch_imports import *
-from .core import *
+from torch_imports import *
+from core import *
 from functools import wraps
 import torch.nn.functional as F
 from torch.autograd import Variable

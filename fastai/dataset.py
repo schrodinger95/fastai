@@ -1,11 +1,11 @@
 import csv
 
-from .imports import *
-from .torch_imports import *
-from .core import *
-from .transforms import *
-from .layer_optimizer import *
-from .dataloader import DataLoader
+from imports import *
+from torch_imports import *
+from core import *
+from transforms import *
+from layer_optimizer import *
+from dataloader import DataLoader
 
 def get_cv_idxs(n, cv_idx=0, val_pct=0.2, seed=42):
     """ Get a list of index values for Validation set from a dataset

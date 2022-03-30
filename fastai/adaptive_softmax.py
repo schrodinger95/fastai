@@ -1,4 +1,4 @@
-from .lm_rnn import *
+from lm_rnn import *
 
 class AdaptiveSoftmax(nn.Module):
     def __init__(self, input_size, cutoff):

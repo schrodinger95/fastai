@@ -88,7 +88,6 @@ def set_train_mode(m):
 def fit(model, data, n_epochs, opt, crit, metrics=None, callbacks=None, stepper=Stepper,
         swa_model=None, swa_start=None, swa_eval_freq=None, **kwargs):
     """ Fits a model
-
     Arguments:
        model (model): any pytorch module
            net = to_gpu(net)
@@ -288,4 +287,3 @@ def model_summary(m, input_size):
 
     for h in hooks: h.remove()
     return summary
-

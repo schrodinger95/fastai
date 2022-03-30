@@ -175,7 +175,7 @@ class ConcatTextDataset(torchtext.legacy.data.Dataset):
             for line in open(p, encoding=encoding): text += text_field.preprocess(line)
             if newline_eos: text.append('<eos>')
 
-        examples = [torchtext.legacy.data.Example.fromlist([text], fields)]
+        examples = [torchtext.data.Example.fromlist([text], fields)]
         super().__init__(examples, fields, **kwargs)
 
 

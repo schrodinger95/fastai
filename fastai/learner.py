@@ -122,44 +122,30 @@ class Learner():
         """Method does some preparation before finally delegating to the 'fit' method for
         fitting the model. Namely, if cycle_len is defined, it adds a 'Cosine Annealing'
         scheduler for varying the learning rate across iterations.
-
         Method also computes the total number of epochs to fit based on provided 'cycle_len',
         'cycle_mult', and 'n_cycle' parameters.
-
         Args:
             model (Learner):  Any neural architecture for solving a supported problem.
                 Eg. ResNet-34, RNN_Learner etc.
-
             data (ModelData): An instance of ModelData.
-
             layer_opt (LayerOptimizer): An instance of the LayerOptimizer class
-
             n_cycle (int): number of cycles
-
             cycle_len (int):  number of cycles before lr is reset to the initial value.
                 E.g if cycle_len = 3, then the lr is varied between a maximum
                 and minimum value over 3 epochs.
-
             cycle_mult (int): additional parameter for influencing how the lr resets over
                 the cycles. For an intuitive explanation, please see
                 https://github.com/fastai/fastai/blob/master/courses/dl1/lesson1.ipynb
-
             cycle_save_name (str): use to save the weights at end of each cycle
-
             best_save_name (str): use to save weights of best model during training.
-
             metrics (function): some function for evaluating a desired metric. Eg. accuracy.
-
             callbacks (list(Callback)): callbacks to apply during the training.
-
             use_wd_sched (bool, optional): set to True to enable weight regularization using
                 the technique mentioned in https://arxiv.org/abs/1711.05101. When this is True
                 alone (see below), the regularization is detached from gradient update and
                 applied directly to the weights.
-
             norm_wds (bool, optional): when this is set to True along with use_wd_sched, the
                 regularization factor is normalized with each training cycle.
-
             wds_sched_mult (function, optional): when this is provided along with use_wd_sched
                 as True, the value computed by this function is multiplied with the regularization
                 strength. This function is passed the WeightDecaySchedule object. And example
@@ -180,7 +166,6 @@ class Learner():
                 at which to evaluate the performance of the swa_model. This evaluation can be costly
                 for models using BatchNorm (requiring a full pass through the data), which is why the
                 default is not to evaluate after each epoch.
-
         Returns:
             None
         """
@@ -240,18 +225,14 @@ class Learner():
         """Method returns an instance of the LayerOptimizer class, which
         allows for setting differential learning rates for different
         parts of the model.
-
         An example of how a model maybe differentiated into different parts
         for application of differential learning rates and weight decays is
         seen in ../.../courses/dl1/fastai/conv_learner.py, using the dict
         'model_meta'. Currently, this seems supported only for convolutional
         networks such as VGG-19, ResNet-XX etc.
-
         Args:
             lrs (float or list(float)): learning rate(s) for the model
-
             wds (float or list(float)): weight decay parameter(s).
-
         Returns:
             An instance of a LayerOptimizer
         """
@@ -260,25 +241,18 @@ class Learner():
     def fit(self, lrs, n_cycle, wds=None, **kwargs):
 
         """Method gets an instance of LayerOptimizer and delegates to self.fit_gen(..)
-
         Note that one can specify a list of learning rates which, when appropriately
         defined, will be applied to different segments of an architecture. This seems
         mostly relevant to ImageNet-trained models, where we want to alter the layers
         closest to the images by much smaller amounts.
-
         Likewise, a single or list of weight decay parameters can be specified, which
         if appropriate for a model, will apply variable weight decay parameters to
         different segments of the model.
-
         Args:
             lrs (float or list(float)): learning rate for the model
-
             n_cycle (int): number of cycles (or iterations) to fit the model for
-
             wds (float or list(float)): weight decay parameter(s).
-
             kwargs: other arguments
-
         Returns:
             None
         """
@@ -293,36 +267,28 @@ class Learner():
 
     def lr_find(self, start_lr=1e-5, end_lr=10, wds=None, linear=False, **kwargs):
         """Helps you find an optimal learning rate for a model.
-
          It uses the technique developed in the 2015 paper
          `Cyclical Learning Rates for Training Neural Networks`, where
          we simply keep increasing the learning rate from a very small value,
          until the loss starts decreasing.
-
         Args:
             start_lr (float/numpy array) : Passing in a numpy array allows you
                 to specify learning rates for a learner's layer_groups
             end_lr (float) : The maximum learning rate to try.
             wds (iterable/float)
-
         Examples:
             As training moves us closer to the optimal weights for a model,
             the optimal learning rate will be smaller. We can take advantage of
             that knowledge and provide lr_find() with a starting learning rate
             1000x smaller than the model's current learning rate as such:
-
             >> learn.lr_find(lr/1000)
-
             >> lrs = np.array([ 1e-4, 1e-3, 1e-2 ])
             >> learn.lr_find(lrs / 1000)
-
         Notes:
             lr_find() may finish before going through each batch of examples if
             the loss decreases enough.
-
         .. _Cyclical Learning Rates for Training Neural Networks:
             http://arxiv.org/abs/1506.01186
-
         """
         self.save('tmp')
         layer_opt = self.get_layer_opt(start_lr, wds)
@@ -336,7 +302,6 @@ class Learner():
         depending on your data).
         At each step, it computes the validation loss and the metrics on the next
         batch of the validation data, so it's slower than lr_find().
-
         Args:
             start_lr (float/numpy array) : Passing in a numpy array allows you
                 to specify learning rates for a learner's layer_groups
@@ -369,19 +334,15 @@ class Learner():
 
     def TTA(self, n_aug=4, is_test=False):
         """ Predict with Test Time Augmentation (TTA)
-
         Additional to the original test/validation images, apply image augmentation to them
         (just like for training images) and calculate the mean of predictions. The intent
         is to increase the accuracy of predictions by examining the images using multiple
         perspectives.
-
         Args:
             n_aug: a number of augmentation images to use per original image
             is_test: indicate to use test images; otherwise use validation images
-
         Returns:
             (tuple): a tuple containing:
-
                 log predictions (numpy.ndarray): log predictions (i.e. `np.exp(log_preds)` will return probabilities)
                 targs (numpy.ndarray): target values when `is_test==False`; zeros otherwise.
         """
@@ -395,13 +356,10 @@ class Learner():
     def fit_opt_sched(self, phases, cycle_save_name=None, best_save_name=None, stop_div=False, data_list=None, callbacks=None, 
                       cut = None, use_swa=False, swa_start=1, swa_eval_freq=5, **kwargs):
         """Wraps us the content of phases to send them to model.fit(..)
-
         This will split the training in several parts, each with their own learning rates/
         wds/momentums/optimizer detailed in phases.
-
         Additionaly we can add a list of different data objets in data_list to train
         on different datasets (to change the size for instance) for each of these groups.
-
         Args:
             phases: a list of TrainingPhase objects
             stop_div: when True, stops the training if the loss goes too high
@@ -444,4 +402,3 @@ class Learner():
             swa_eval_freq=swa_eval_freq, **kwargs)
 
     def _get_crit(self, data): return F.mse_loss
-

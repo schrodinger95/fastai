@@ -1,5 +1,5 @@
-from .imports import *
-from .torch_imports import *
+from imports import *
+from torch_imports import *
 
 def sum_geom(a,r,n): return a*n if r==1 else math.ceil(a*(1-r**n)/(1-r))
 
@@ -28,7 +28,7 @@ def T(a, half=False, cuda=True):
         elif a.dtype in (np.float32, np.float64):
             a = torch.cuda.HalfTensor(a) if half else torch.FloatTensor(a)
         else: raise NotImplementedError(a.dtype)
-    if cuda: a = to_gpu(a, async=True)
+    if torch.cuda.is_available(): a = to_gpu(a)
     return a
 
 def create_variable(x, volatile, requires_grad=False):

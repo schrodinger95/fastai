@@ -287,3 +287,4 @@ def model_summary(m, input_size):
 
     for h in hooks: h.remove()
     return summary
+    

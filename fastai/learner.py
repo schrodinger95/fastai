@@ -402,3 +402,4 @@ class Learner():
             swa_eval_freq=swa_eval_freq, **kwargs)
 
     def _get_crit(self, data): return F.mse_loss
+    
